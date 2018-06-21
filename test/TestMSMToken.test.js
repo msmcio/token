@@ -1,14 +1,26 @@
-var MSMToken = artifacts.require("MSMToken");
+const assertRevert = require('./helpers/assertRevert');
+const MSMToken = artifacts.require("MSMToken");
 
-contract('MSMToken', async ([_, owner, recipient, anotherAccount]) => {
+contract('MSMToken', async ([owner]) => {
 
-    const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+    const TOTAL_SUPPLY = 12000;
+
+    before(async () => {
+        this.token = await MSMToken.new();
+    });
 
     it("total supply should be 12000", async () => {
-        let instance = await MSMToken.deployed();
-        let totalSupply = await instance.totalSupply();
 
-        assert.equal(totalSupply.valueOf(), 12000);
+        let totalSupply = await this.token.totalSupply.call();
+
+        assert.equal(totalSupply.toNumber(), TOTAL_SUPPLY);
+    });
+
+    it("the owner balance", async () => {
+
+        let balance = await this.token.balanceOf.call(owner);
+
+        assert.equal(balance.toNumber(), TOTAL_SUPPLY);
     });
 
 });
