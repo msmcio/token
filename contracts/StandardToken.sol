@@ -3,7 +3,6 @@ pragma solidity ^0.4.24;
 import "./BasicToken.sol";
 import "./ERC20.sol";
 
-
 /**
  * @title Standard ERC20 token
  *
@@ -13,11 +12,11 @@ import "./ERC20.sol";
  */
 contract StandardToken is ERC20, BasicToken {
 
-    //所有者批准转入另一地址
+    //批准转入的地址对应的token数量
     mapping(address => mapping(address => uint256)) internal allowed;
 
     /**
-     * @dev 发送_value数量从_from地址到_to地址
+     * @dev approve批准之后，从_from地址发送_value个token到_to地址
      */
     function transferFrom(
         address _from,
@@ -39,7 +38,7 @@ contract StandardToken is ERC20, BasicToken {
     }
 
     /**
-     * @dev 允许账户从当前用户转移余额到那个账户，多次调用会覆盖
+     * @dev 批准_spender账户从自己的账户转移_value个token。可以分多次转移。
      */
     function approve(address _spender, uint256 _value) public returns (bool) {
         allowed[msg.sender][_spender] = _value;
@@ -48,7 +47,7 @@ contract StandardToken is ERC20, BasicToken {
     }
 
     /**
-     * @dev 返回被允许转移的余额数量
+     * @dev 返回_spender还能提取token的个数
      */
     function allowance(
         address _owner,
@@ -62,7 +61,7 @@ contract StandardToken is ERC20, BasicToken {
     }
 
     /**
-     * @dev 允许账户从当前用户增加转移余额到那个账户
+     * @dev 批准_spender账户从自己的账户增加_value个token。
      */
     function increaseApproval(
         address _spender,
@@ -78,7 +77,7 @@ contract StandardToken is ERC20, BasicToken {
     }
 
     /**
-     * @dev 允许账户从当前用户减少转移余额到那个账户
+     * @dev 批准_spender账户从自己的账户减少_value个token
      */
     function decreaseApproval(
         address _spender,
